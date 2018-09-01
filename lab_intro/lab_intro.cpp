@@ -45,7 +45,7 @@ PNG grayscale(PNG image) {
  * is a total of `sqrt((3 * 3) + (4 * 4)) = sqrt(25) = 5` pixels away and
  * its luminance is decreased by 2.5% (0.975x its original value).  At a
  * distance over 160 pixels away, the luminance will always decreased by 80%.
- * 
+ *
  * The modified PNG is then returned.
  *
  * @param image A PNG object which holds the image data to be modified.
@@ -56,10 +56,34 @@ PNG grayscale(PNG image) {
  */
 PNG createSpotlight(PNG image, int centerX, int centerY) {
 
-  return image;
-  
+  for (unsigned x = 0; x < image.width(); x++) {
+    for (unsigned y = 0; y < image.height(); y++) {
+      HSLAPixel & pixel = image.getPixel(x, y);
+      unsigned k;
+      unsigned j;
+      double p;
+      k = centerX - x;
+      j = centerY - y;
+      k = k * k;
+      j = j * j;
+      p = k + j;
+      p = sqrt(p);
+      if(p <= 160)
+      {
+        p = p * 0.005;
+        p = 1 - p;
+        pixel.l = p * pixel.l;
+      }
+      else
+      {
+        pixel.l = 0.2 * pixel.l;
+      }
+
 }
- 
+}
+  return image;
+
+}
 
 /**
  * Returns a image transformed to Illini colors.
@@ -73,9 +97,21 @@ PNG createSpotlight(PNG image, int centerX, int centerY) {
 **/
 PNG illinify(PNG image) {
 
-  return image;
+    for (unsigned x = 0; x < image.width(); x++) {
+      for (unsigned y = 0; y < image.height(); y++) {
+        HSLAPixel & pixel = image.getPixel(x, y);
+        if(pixel.h > 102 && pixel.h < 282)
+          {
+            pixel.h = 216;
+          }
+        else
+          {
+            pixel.h = 11;
+          }
 }
- 
+}
+    return image;
+}
 
 /**
 * Returns an immge that has been watermarked by another image.
@@ -91,5 +127,16 @@ PNG illinify(PNG image) {
 */
 PNG watermark(PNG firstImage, PNG secondImage) {
 
+  for (unsigned x = 0; x < secondImage.width(); x++) {
+    for (unsigned y = 0; y < secondImage.height(); y++) {
+      HSLAPixel & pixel = secondImage.getPixel(x, y);
+      if(pixel.l == 1)
+      {
+        HSLAPixel & pixel1 = firstImage.getPixel(x, y);
+        double j = pixel1.l;
+        pixel1.l = j+0.2;
+      }
+    }
+  }
   return firstImage;
 }
