@@ -28,7 +28,7 @@ void sketchify(std::string inputFile, std::string outputFile) {
     unsigned width = original->width();
     unsigned height = original->height();
     // Create out.png
-    PNG* output = setupOutput(width, height);;
+    PNG* output = setupOutput(width, height);
 
 
     // Load our favorite color to color the outline
