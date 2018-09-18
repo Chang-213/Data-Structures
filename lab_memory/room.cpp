@@ -28,8 +28,9 @@ Room::Room(const Room& other)
 Room& Room::operator=(const Room& other)
 {
     if (this != &other) {
-        clear();
+      clear();
         copy(other);
+
     }
     return *this;
 }
@@ -41,8 +42,13 @@ Room::~Room()
 
 void Room::addLetter(const Letter& L)
 {
+
     letters[letterCount++] = L;
+
+
     count += L.count;
+
+
 }
 
 int Room::spaceRemaining()
@@ -60,9 +66,9 @@ void Room::print(std::ostream & stream /* = std::cout */)
 
 void Room::clear()
 {
-    if (letters != NULL)
+    if (letters != nullptr)
 
-        delete letters;
+        delete[] letters;
 }
 
 void Room::copy(const Room& other)
