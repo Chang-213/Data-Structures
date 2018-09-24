@@ -17,7 +17,7 @@
 const double PI = 3.141592;
 
 Circle::Circle(const Vector2& pcenter, const HSLAPixel& pcolor, int pradius)
-    : radius_(pradius)
+    : Shape(pcenter, pcolor), radius_(pradius)
 {
     /* Nothing.  See initialization list. */
 }
@@ -40,7 +40,7 @@ bool Circle::contains(const Vector2& p) const
     return distance <= this->radius_;
 }
 
-void Circle::drawPoints(PNG* canvas, int x, int y) const
+void Circle::drawPoints(PNG* canvas, int x, int y) const 
 {
     HSLAPixel* pixel;
     int i;
@@ -99,7 +99,7 @@ void Circle::drawPoints(PNG* canvas, int x, int y) const
 
 void Circle::draw(PNG* canvas) const
 {
-    HSLAPixel& pixel = canvas->getPixel(static_cast<int>(this->center().x()),
+    HSLAPixel &pixel = canvas->getPixel(static_cast<int>(this->center().x()),
                                  static_cast<int>(this->center().y()));
     pixel = this->color();
 
@@ -112,7 +112,8 @@ void Circle::draw(PNG* canvas) const
         x++;
         if (p < 0) {
             p += 2 * x + 1;
-        } else {
+        }
+        else {
             y--;
             p += 2 * (x - y + 1);
         }
