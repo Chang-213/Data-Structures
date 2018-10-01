@@ -120,21 +120,18 @@ void scramble(queue<T>& q)
       T rep = count;
       if(count%2 == 0){
         for(int i = 0; i < rep; i++){
-          T var = q.front();
+          s.push(q.front());
           q.pop();
-          s.push(var);
         }
         for(int i = 0; i < rep; i++){
-          T var = s.top();
+          q.push(s.top());
           s.pop();
-          q.push(var);
         }
       }
       else{
         for(int i = 0; i < rep; i++){
-          T var = q.front();
+          q.push(q.front());
           q.pop();
-          q.push(var);
         }
       }
       capacity = capacity - rep;
@@ -144,21 +141,18 @@ void scramble(queue<T>& q)
       T rep = capacity;
       if(count%2 == 0){
         for(int i = 0; i < rep; i++){
-          T var = q.front();
+          s.push(q.front());
           q.pop();
-          s.push(var);
         }
         for(int i = 0; i < rep; i++){
-          T var = s.top();
+          q.push(s.top());
           s.pop();
-          q.push(var);
         }
       }
       else{
         for(int i = 0; i < rep; i++){
-          T var = q.front();
+          q.push(q.front());
           q.pop();
-          q.push(var);
         }
       }
       capacity = capacity - rep;
