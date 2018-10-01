@@ -111,7 +111,7 @@ return true;
 template <typename T>
 void scramble(queue<T>& q)
 {
-
+    queue<T> q2;
     T capacity = q.size();
     T count = 1;
     stack<T> s;
@@ -124,13 +124,13 @@ void scramble(queue<T>& q)
           q.pop();
         }
         for(int i = 0; i < rep; i++){
-          q.push(s.top());
+          q2.push(s.top());
           s.pop();
         }
       }
       else{
         for(int i = 0; i < rep; i++){
-          q.push(q.front());
+          q2.push(q.front());
           q.pop();
         }
       }
@@ -145,19 +145,23 @@ void scramble(queue<T>& q)
           q.pop();
         }
         for(int i = 0; i < rep; i++){
-          q.push(s.top());
+          q2.push(s.top());
           s.pop();
         }
       }
       else{
         for(int i = 0; i < rep; i++){
-          q.push(q.front());
+          q2.push(q.front());
           q.pop();
         }
       }
       capacity = capacity - rep;
       count++;
     }
+}
+while(q2.size()!= 0){
+  q.push(q2.front());
+  q2.pop();
 }
 }
 
