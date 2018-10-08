@@ -4,6 +4,7 @@
  * You'll need to modify this file.
  */
 #include "TreeTraversals/InorderTraversal.h"
+#include "binarytree.h"
 #include <iostream>
 
 /**
@@ -79,7 +80,26 @@ void BinaryTree<T>::printLeftToRight(const Node* subRoot) const
 void BinaryTree<T>::mirror()
 {
     //your code here
+    mirror(root);
 }
+
+template <typename T>
+void BinaryTree<T>::mirror(Node* subRoot)
+{
+  if(subRoot->left == NULL && subRoot->right == NULL){
+    return;
+  }
+  if(subRoot->left != NULL){
+    mirror(subRoot->left);
+  }
+  if(subRoot->right != NULL){
+    mirror(subRoot->right);
+  }
+  Node* rem = subRoot->left;
+  subRoot->left = subRoot->right;
+  subRoot->right = rem;
+}
+
 
 
 /**
@@ -92,8 +112,24 @@ template <typename T>
 bool BinaryTree<T>::isOrderedIterative() const
 {
     // your code here
-    return false;
+    int arr [1000];
+    int i = 0;
+    int count = 0;
+    BinaryTree<int> myTree = *this;
+    InorderTraversal<int> iot(myTree.getRoot());
+    for (TreeTraversal<int>::Iterator it = iot.begin(); it != iot.end(); ++it) {
+        arr[i] = (*it)->elem;
+        i++;
+    }
+    for(int j = 0; j < i-1; j++){
+        if(arr[j]>arr[j+1]){
+          return false;
+        }
+    }
+      return true;
+
 }
+
 
 /**
  * isOrdered() function recursive version
@@ -105,10 +141,58 @@ template <typename T>
 bool BinaryTree<T>::isOrderedRecursive() const
 {
     // your code here
+    return isOrderedRecursive(root);
+}
+template <typename T>
+bool BinaryTree<T>::isOrderedRecursive(Node* root) const
+{
+    // your code here
+    bool order1 = false;
+    bool order2 = false;
+    T valright;
+    T valleft;
+    if(root == NULL){
+      return true;
+    }
+    if(root->right != NULL){
+      order1 = isOrderedRecursive(root->right);
+      valright = farright(root->right);
+    }
+    else{
+      order1 = true;
+      valright = root->elem;
+    }
+    if(root->left != NULL){
+      order2 = isOrderedRecursive(root->left);
+      valleft = farleft(root->left);
+    }
+    else{
+      order2 = true;
+      valleft = root->elem;
+    }
+    if(order1 && order2 && (valright >= root->elem) && (valleft <= root->elem)){
+      return true;
+    }
     return false;
 }
 
+template <typename T>
+T BinaryTree<T>::farright(Node* subRoot) const
+{
+  if(subRoot->right == NULL){
+    return subRoot->elem;
+  }
+  return farright(subRoot->right);
+}
 
+template <typename T>
+T BinaryTree<T>::farleft(Node* subRoot) const
+{
+  if(subRoot->left == NULL){
+    return subRoot->elem;
+  }
+  return farleft(subRoot->left);
+}
 /**
  * creates vectors of all the possible paths from the root of the tree to any leaf
  * node and adds it to another vector.
@@ -117,13 +201,27 @@ bool BinaryTree<T>::isOrderedRecursive() const
  * added before paths ending in a node further to the right.
  * @param paths vector of vectors that contains path of nodes
  */
-template <typename T>
-void BinaryTree<T>::getPaths(vector<vector<T> > &paths) const
-{
-    // your code here
-}
+ template <typename T>
+ void BinaryTree<T>::getPaths(vector<vector<T> > &paths) const
+ {
+   vector<T> stash{};
+    getPaths(root,paths,stash);
+ }
 
-
+ template <typename T>
+ void BinaryTree<T>::getPaths(Node* subRoot, vector<vector<T> > &paths, vector<T> stash) const
+ {
+   if(subRoot == NULL){
+       return;
+     }
+      stash.push_back(subRoot->elem);
+     if(subRoot->right == NULL && subRoot->left ==NULL){
+       paths.push_back(stash);
+       stash.clear();
+     }
+     getPaths(subRoot->left, paths, stash);
+     getPaths(subRoot->right, paths, stash);
+ }
 /**
  * Each node in a tree has a distance from the root node - the depth of that
  * node, or the number of edges along the path from that node to the root. This
@@ -136,6 +234,21 @@ template <typename T>
 int BinaryTree<T>::sumDistances() const
 {
     // your code here
-    return -1;
+    int val = 0;
+    sumDistances(root->right, val);
+    sumDistances(root->left, val);
+    return val;
 }
-
+template <typename T>
+int BinaryTree<T>::sumDistances(Node* node, int &num) const
+{
+    // your code here
+    int val = 0;
+    if(node == NULL){
+      return 0;
+    }
+    val = val + sumDistances(node->right, num) + 1;
+    val = val +  sumDistances(node->left, num);
+    num = num + val;
+    return val;
+}
