@@ -372,11 +372,15 @@ while(f != NULL){
     break;
   }
   ListNode* hold = f->next;
-  f->next->prev = NULL;
-  f->next = temp;
-  temp->prev = f;
-  f = temp;
-  temp = hold;
+  ListNode* temph = hold;
+  if(temph != NULL){
+    f->next->prev = NULL;
+    f->next = temp;
+    temp->prev = f;
+    f = temp;
+    temp = temph;
+  }
+
 }
 return s;
 }
