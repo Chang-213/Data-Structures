@@ -286,7 +286,20 @@ List<T> List<T>::split(int splitPoint) {
 template <typename T>
 typename List<T>::ListNode * List<T>::split(ListNode * start, int splitPoint) {
   /// @todo Graded in MP3.2
-  return NULL;
+  int a = 0;
+  while(a != splitPoint){
+    start = start->next;
+    a++;
+  }
+  if(a == 0){
+    return start;
+  }
+  if(start == NULL){
+    return start;
+  }
+  start->prev->next = NULL;
+  start->prev = NULL;
+  return start;
 }
 
 /**
@@ -327,7 +340,45 @@ void List<T>::mergeWith(List<T> & otherList) {
 template <typename T>
 typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) {
   /// @todo Graded in MP3.2
-  return NULL;
+  ListNode* f;
+  ListNode* temp;
+  ListNode* s;
+  if(first == NULL){
+    return NULL;
+  }
+  if(second == NULL){
+    return NULL;
+  }
+  if(first == second){
+    return first;
+  }
+  if(first->data < second->data){
+    f = first;
+    temp = second;
+    s = first;
+  }
+  else{
+    f = second;
+    temp = first;
+    s = second;
+  }
+while(f != NULL){
+  while(f->next != NULL && f->next->data < temp->data){
+    f = f->next;
+  }
+  if(f->next == NULL){
+    f->next = temp;
+    temp->prev = f;
+    break;
+  }
+  ListNode* hold = f->next;
+  f->next->prev = NULL;
+  f->next = temp;
+  temp->prev = f;
+  f = temp;
+  temp = hold;
+}
+return s;
 }
 
 /**
@@ -355,5 +406,15 @@ void List<T>::sort() {
 template <typename T>
 typename List<T>::ListNode* List<T>::mergesort(ListNode * start, int chainLength) {
   /// @todo Graded in MP3.2
-  return NULL;
+  if(chainLength == 1){
+    return start;
+  }
+  if(chainLength == 0){
+    return start;
+  }
+  int half = chainLength/2;
+  ListNode* yeet = split(start, half);
+  start = mergesort(start, half);
+  yeet = mergesort(yeet, chainLength-half);
+  return merge(start,yeet);
 }
