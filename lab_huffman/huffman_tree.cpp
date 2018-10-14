@@ -92,14 +92,14 @@ HuffmanTree::removeSmallest(queue<TreeNode*>& singleQueue,
   }
 
   else{
-      if(mergeQueue.front()->freq.getFrequency() < singleQueue.front()->freq.getFrequency()){
-        TreeNode* temp = mergeQueue.front();
-        mergeQueue.pop();
+      if(singleQueue.front()->freq.getFrequency() <= mergeQueue.front()->freq.getFrequency()){
+        TreeNode* temp = singleQueue.front();
+        singleQueue.pop();
         return temp;
       }
       else{
-        TreeNode* temp = singleQueue.front();
-        singleQueue.pop();
+        TreeNode* temp = mergeQueue.front();
+        mergeQueue.pop();
         return temp;
       }
 }
