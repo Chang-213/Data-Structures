@@ -236,7 +236,7 @@ HuffmanTree::TreeNode* HuffmanTree::readTree(BinaryFileReader& bfile)
     }
 
   }
-      return NULL;
+  
     /**
      * @todo Your code here!
      *
