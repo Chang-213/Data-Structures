@@ -33,7 +33,6 @@ public:
   class Iterator : std::iterator<std::forward_iterator_tag, Point> {
   public:
     Iterator();
-
     Iterator & operator++();
     Point operator*();
     bool operator!=(const Iterator &other);
@@ -41,7 +40,7 @@ public:
     /** @todo [Part 1] */
     /** add member functions if neccesary*/
 
-  Iterator(PNG png, Point start, double tolerance, ImageTraversal* in);
+  Iterator(PNG & png, Point& start, double tolerance, ImageTraversal* in);
   bool finish;
   bool available(Point next);
   void setfinish(bool ret);
@@ -57,7 +56,7 @@ public:
     double tol;
     vector<bool> seen;
     vector<Point> search;
-    
+
   };
 
   /**

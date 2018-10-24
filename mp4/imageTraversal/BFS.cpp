@@ -44,8 +44,8 @@ ImageTraversal::Iterator BFS::begin() {
  */
 ImageTraversal::Iterator BFS::end() {
   /** @todo [Part 1] */
-  
-  Iterator ret = ImageTraversal::Iterator(p, strt, tol, this);
+
+  Iterator ret = ImageTraversal::Iterator();
   ret.setfinish(true);
   return ret;
 
