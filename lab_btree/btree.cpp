@@ -194,8 +194,12 @@ void BTree<K, V>::insert(BTreeNode* subroot, const DataPair& pair)
 
     if(subroot->elements.empty() == false){
       if(subroot->elements.size()>first_larger_idx){
-        if(subroot->elements[first_larger_idx] == pair){
-          return;
+        unsigned i = 0;
+        while(i != subroot->elements.size()){
+          if(subroot->elements[i].key == pair.key){
+            return;
+          }
+          i++;
         }
       }
     }
