@@ -285,7 +285,8 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query) const
      * @todo Implement this function!
      */
     KDTreeNode* close = root;
-    near(query, root, close, 0);
+    double ret;
+    ret = near(query, root, close, 0);
     return close->point;
 
 }
