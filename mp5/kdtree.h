@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include <stack>
+
 #include <vector>
 #include "util/coloredout.h"
 #include "point.h"
