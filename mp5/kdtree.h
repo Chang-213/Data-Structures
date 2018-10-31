@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include <stack>
 #include <vector>
 #include "util/coloredout.h"
 #include "point.h"
@@ -259,6 +260,16 @@ class KDTree
     /**
      * @todo Add your helper functions here.
      */
+     vector<Point<Dim>> Points;
+     double near(const Point<Dim>& query, KDTreeNode* subroot, KDTreeNode* & next, int dim) const;
+     void rewind(const Point<Dim>& query, KDTreeNode* subroot, KDTreeNode* & next, int d, double & dou, vector<KDTreeNode*> & original, vector<bool> & dir) const;
+     KDTreeNode* trav(const Point<Dim>& query, KDTreeNode* subroot, int d, int & floor, double & dou, vector<KDTreeNode*> & original, vector<bool> & dir) const;
+     void erase(KDTreeNode* subroot);
+     KDTreeNode* copy(const KDTree* subroot);
+     int shift(vector<Point<Dim>>& in, int first, int second, int median2, int dim);
+     void sort(vector<Point<Dim>>& in, int first, int second, int median, int dim);
+     KDTreeNode* tree(vector<Point<Dim>>& in, int first, int second, int dim);
+     double distance(const Point<Dim>& first, const Point<Dim>& second) const;
 };
 
 #include "kdtree.hpp"
