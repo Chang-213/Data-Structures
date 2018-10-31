@@ -1,2 +1,2 @@
-changml2
-tarasa2
+netid1
+netid2

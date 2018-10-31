@@ -102,7 +102,7 @@ void KDTree<Dim>::sort(vector<Point<Dim>>& in, int first, int second, int median
   if(median < median2){
     return sort(in, first, median2-1, median, dim);
   }
-  else{
+  if(median > median2){
     return sort(in, median2+1, second, median, dim);
   }
 
