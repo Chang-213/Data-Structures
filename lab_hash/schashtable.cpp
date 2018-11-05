@@ -8,11 +8,11 @@
  */
 
 #include "schashtable.h"
- 
+
 using hashes::hash;
 using std::list;
 using std::pair;
-  
+
 template <class K, class V>
 SCHashTable<K, V>::SCHashTable(size_t tsize)
 {
@@ -62,6 +62,15 @@ void SCHashTable<K, V>::insert(K const& key, V const& value)
      * @todo Implement this function.
      *
      */
+     elems = elems + 1;
+     if(shouldResize() == true){
+       resizeTable();
+     }
+    pair<K, V> temp(key, value);
+    size_t index = hash(key, size);
+    table[index].push_front(temp);
+
+
 }
 
 template <class K, class V>
@@ -74,7 +83,15 @@ void SCHashTable<K, V>::remove(K const& key)
      * Please read the note in the lab spec about list iterators and the
      * erase() function on std::list!
      */
-    (void) key; // prevent warnings... When you implement this function, remove this line.
+     // prevent warnings... When you implement this function, remove this line.
+     size_t index = hash(key, size);
+     for(it = table[index].begin(); it != table[index].end(); it++){
+       if(it->first == key){
+         table[index].erase(it);
+         elems = elems - 1;
+         break;
+       }
+     }
 }
 
 template <class K, class V>
@@ -84,7 +101,13 @@ V SCHashTable<K, V>::find(K const& key) const
     /**
      * @todo: Implement this function.
      */
-
+     typename list<pair<K, V>>::iterator it;
+     size_t index = hash(key, size);
+     for(it = table[index].begin(); it != table[index].end(); it++){
+       if(it->first == key){
+         return it->second;
+       }
+     }
     return V();
 }
 
@@ -142,4 +165,16 @@ void SCHashTable<K, V>::resizeTable()
      *
      * @hint Use findPrime()!
      */
+     size_t news = findPrime(size * 2);
+     list<std::pair<K, V>>* newtable = new list<pair<K, V>>[news];
+     for(size_t s = 0; s < size; s++){
+       for(it = table[s].begin(); it != table[s].end(); it++){
+         pair<K, V> in(it->first, it->second);
+         size_t index = hash(it->first, news);
+         newtable[index].push_front(in);
+       }
+     }
+     delete[] table;
+     table = newtable;
+     size = news;
 }

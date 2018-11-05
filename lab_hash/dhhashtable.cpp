@@ -89,9 +89,36 @@ void DHHashTable<K, V>::insert(K const& key, V const& value)
      *  forget to mark the cell for probing with should_probe!
      */
 
-    (void) key;   // prevent warnings... When you implement this function, remove this line.
-    (void) value; // prevent warnings... When you implement this function, remove this line.
+     elems = elems + 1;
+     if(shouldResize() == true){
+       resizeTable();
+     }
+    size_t h = hash(key, size);
+    size_t jump = secondary_hash(key, size);
+    size_t i = 0;
+    size_t idx = h;
+    while(table[idx] != NULL){
+      ++i;
+      idx = (h + jump*i) % size;
+
+    }
+    table[idx] = new pair<K, V>(key, value);
+    should_probe[idx] = true;
+
 }
+/*
+size_t h = hash(table[slot]->first, newSize);
+size_t jump = secondary_hash(table[slot]->first, newSize);
+size_t i = 0;
+size_t idx = h;
+while (temp[idx] != NULL)
+{
+    ++i;
+    idx = (h + jump*i) % newSize;
+}
+temp[idx] = table[slot];
+should_probe[idx] = true;
+*/
 
 template <class K, class V>
 void DHHashTable<K, V>::remove(K const& key)
@@ -99,6 +126,15 @@ void DHHashTable<K, V>::remove(K const& key)
     /**
      * @todo Implement this function
      */
+     int index = findIndex(key);
+     if(index == -1){
+       return;
+     }
+     if(index != -1){
+       delete table[index];
+       table[index] = NULL;
+       elems = elems -1;
+     }
 }
 
 template <class K, class V>
@@ -107,6 +143,23 @@ int DHHashTable<K, V>::findIndex(const K& key) const
     /**
      * @todo Implement this function
      */
+     size_t h = hash(key, size);
+     size_t jump = secondary_hash(key, size);
+     size_t i = 0;
+     size_t idx = h;
+     size_t temp = idx;
+     while(should_probe[idx] == true){
+       if(table[idx] != NULL){
+         if(table[idx]->first == key){
+           return idx;
+         }
+     }
+     ++i;
+     idx = (h + jump*i) % size;
+     if(idx == temp){
+       break;
+     }
+   }
     return -1;
 }
 
@@ -168,7 +221,7 @@ void DHHashTable<K, V>::resizeTable()
             size_t h = hash(table[slot]->first, newSize);
             size_t jump = secondary_hash(table[slot]->first, newSize);
             size_t i = 0;
-            size_t idx = h; 
+            size_t idx = h;
             while (temp[idx] != NULL)
             {
                 ++i;
