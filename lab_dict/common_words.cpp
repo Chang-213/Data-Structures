@@ -48,28 +48,21 @@ void CommonWords::init_file_word_maps(const vector<string>& filenames)
         // file
         vector<string> words = file_to_vector(filenames[i]);
         /* Your code goes here! */
-
-        //make a map
-        map<int, string> m;
-
-        //store string words into a map
-        for(int j = 0; j < words.size(); j++){
-        m[j] = words[j];
-        }
-        for(int j = 0; j < words.size(); j++){
-          map<unsigned long, unsigned long>::iterator lookup = m.find(m[j]);
-          if (lookup == file_word_maps[i].end()) {
-              file_word_maps[i][m[j]] = file_word_maps[i][m[j]] + 1;
-          }
-        }
-
-
-    }
+        for(auto& vIter : words)
+		{
+			file_word_maps[i][vIter]++;
+		}
+  }
 }
 
 void CommonWords::init_common()
 {
     /* Your code goes here! */
+    for (map<string, unsigned int> m : file_word_maps) {
+       for (auto& firstIter : m) {
+         common[firstIter.first] ++;
+       }
+   }
 }
 
 /**
@@ -81,6 +74,23 @@ vector<string> CommonWords::get_common_words(unsigned int n) const
 {
     vector<string> out;
     /* Your code goes here! */
+	for(auto& commonIt : common)
+	{
+		if(commonIt.second == file_word_maps.size())
+		{
+			size_t count = 0;
+      size_t final = file_word_maps.size();
+			for(auto& fileIt : file_word_maps){
+				auto wordHold = fileIt.find(commonIt.first);
+				size_t totalCt = wordHold->second;
+				if(!(totalCt < n))
+					count = count+1;
+			}
+			if(count == final){
+				out.push_back(commonIt.first);
+      }
+		}
+	}
     return out;
 }
 
