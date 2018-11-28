@@ -20,18 +20,26 @@ void SquareMaze::makeMaze(int width, int height){
     int randY = rand() % h;
     bool randR = rand() % 2;
     if (randR == true) {
-      if (randX < w - 1 && right[randX + randY * w] && sets.find(randX + randY * w) != sets.find(randX + 1 + randY * w)) {
-          right[randX + randY * w] = false;
-          sets.setunion(sets.find(randX + randY * w), sets.find(randX + 1 + randY * w));
-          area--;
-        }
-      }
-      else {
-        if (randY < h - 1 && down[randX + randY * w] && sets.find(randX + randY * w) != sets.find(randX + (randY + 1) * w)) {
-            down[randX + randY * w] = false;
-            sets.setunion(sets.find(randX + randY * w), sets.find(randX + (1 + randY) * w));
+      if (randX < w - 1){
+        if(right[randX + randY * w] == true){
+          if(sets.find(randX + randY * w) != sets.find(randX + 1 + randY * w)){
+            right[randX + randY * w] = false;
+            sets.setunion(sets.find(randX + randY * w), sets.find(randX + 1 + randY * w));
             area--;
           }
+        }
+      }
+    }
+    else {
+        if (randY < h - 1){
+          if(down[randX + randY * w] == true){
+            if(sets.find(randX + randY * w) != sets.find(randX + (randY + 1) * w)){
+              down[randX + randY * w] = false;
+              sets.setunion(sets.find(randX + randY * w), sets.find(randX + (1 + randY) * w));
+              area--;
+            }
+          }
+        }
         }
       }
 }
