@@ -8,6 +8,11 @@ using namespace std;
 int main()
 {
     // Write your own main here
-    cout << "Add your own tests here! Modify main.cpp" << endl;
+    SquareMaze main;
+    main.makeMaze(75, 75);
+    PNG * actualOutput = main.drawCreativeMaze();
+    actualOutput->writeToFile("creative.png");
+    PNG * actualOutput_sol = main.drawMazeWithSolutioncreative();
+    actualOutput_sol->writeToFile("creative_solution.png");
     return 0;
 }

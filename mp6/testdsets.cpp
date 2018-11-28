@@ -16,6 +16,7 @@ int main()
     DisjointSets s;
 
     s.addelements(50);
+
     s.setunion(2, 3);
     s.setunion(3, 5);
     s.setunion(5, 7);

@@ -48,6 +48,22 @@ void CommonWords::init_file_word_maps(const vector<string>& filenames)
         // file
         vector<string> words = file_to_vector(filenames[i]);
         /* Your code goes here! */
+
+        //make a map
+        map<int, string> m;
+
+        //store string words into a map
+        for(int j = 0; j < words.size(); j++){
+        m[j] = words[j];
+        }
+        for(int j = 0; j < words.size(); j++){
+          map<unsigned long, unsigned long>::iterator lookup = m.find(m[j]);
+          if (lookup == file_word_maps[i].end()) {
+              file_word_maps[i][m[j]] = file_word_maps[i][m[j]] + 1;
+          }
+        }
+
+
     }
 }
 
