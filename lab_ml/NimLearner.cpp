@@ -26,6 +26,25 @@
  */
 NimLearner::NimLearner(unsigned startingTokens) : g_(true, true) {
     /* Your code goes here! */
+    for(int i = startingTokens; i >= 0; i--){
+      g_.insertVertex("p1-"+to_string(i));
+      g_.insertVertex("p2-"+to_string(i));
+    }
+    for(int i = startingTokens; i >1; i--){
+      g_.insertEdge("p1-"+to_string(i), "p2-"+to_string(i-1));
+      g_.setEdgeWeight("p1-"+to_string(i), "p2-"+to_string(i-1), 0);
+      g_.insertEdge("p1-"+to_string(i), "p2-"+to_string(i-2));
+      g_.setEdgeWeight("p1-"+to_string(i), "p2-"+to_string(i-2), 0);
+      g_.insertEdge("p2-"+to_string(i), "p1-"+to_string(i-1));
+      g_.setEdgeWeight("p2-"+to_string(i), "p1-"+to_string(i-1), 0);
+      g_.insertEdge("p2-"+to_string(i), "p1-"+to_string(i-2));
+      g_.setEdgeWeight("p2-"+to_string(i), "p1-"+to_string(i-2), 0);
+    }
+g_.insertEdge("p1-1", "p2-0");
+g_.setEdgeWeight("p1-1", "p2-0", 0);
+g_.insertEdge("p2-1", "p1-0");
+g_.setEdgeWeight("p2-1", "p1-0", 0);
+startingVertex_ = "p1-"+to_string(startingTokens);
 }
 
 /**
@@ -40,6 +59,13 @@ NimLearner::NimLearner(unsigned startingTokens) : g_(true, true) {
 std::vector<Edge> NimLearner::playRandomGame() const {
   vector<Edge> path;
  /* Your code goes here! */
+ Vertex first = startingVertex_;
+ while(g_.getAdjacent(first).size() > 0){
+   int pick = rand() % g_.getAdjacent(first).size();
+   Vertex p = g_.getAdjacent(first)[pick];
+   path.push_back(g_.getEdge(first, p));
+   first = p;
+ }
   return path;
 }
 
@@ -61,6 +87,14 @@ std::vector<Edge> NimLearner::playRandomGame() const {
  */
 void NimLearner::updateEdgeWeights(const std::vector<Edge> & path) {
  /* Your code goes here! */
+ int size = path.size()-1;
+ int  i = 1;
+ while(size >= 0){
+   int weight = g_.getEdgeWeight(path[size].source, path[size].dest);
+   g_.setEdgeWeight(path[size].source, path[size].dest, weight+i);
+   i = i * -1;
+   size--;
+ }
 }
 
 /**
