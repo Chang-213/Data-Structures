@@ -1,0 +1,1 @@
+You walk to the center of the room and start hitting the hardest dabs that you possibly can. The force of these dabs are putting incredible strain on your shoulder tendons. Eventually the pain is too much and you decide to stop. Alas you have grown weak and tired. So you decide to just sit in one of the chairs and sleep in the room until cs225 begins the next day.

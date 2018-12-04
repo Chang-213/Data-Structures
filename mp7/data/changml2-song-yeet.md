@@ -1,0 +1,1 @@
+You finished what you wanted to today. There is no reason to stay any longer. Since the sun set a while ago, the path toward green street is dark and spooky. Afraid that you might get spooked, you sprint home.
