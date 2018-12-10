@@ -61,6 +61,8 @@ private:
   Graph residual_;
   Graph flow_;
 
+  std::vector<Vertex> money;
+
   Vertex source_;
   Vertex sink_;
 

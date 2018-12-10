@@ -20,7 +20,21 @@ int min(int a, int b) {
 
 NetworkFlow::NetworkFlow(Graph & startingGraph, Vertex source, Vertex sink) :
   g_(startingGraph), residual_(Graph(true,true)), flow_(Graph(true,true)), source_(source), sink_(sink) {
-
+source_ = source;
+sink_ = sink;
+residual_ = g_;
+flow_ = g_;
+vector<Edge> ed = flow_.getEdges();
+int k = ed.size();
+for(int i = 0; i < k; i++){
+  flow_.setEdgeWeight(ed[i].source, ed[i].dest, 0);
+}
+vector<Edge> res = residual_.getEdges();
+int y = res.size();
+for(int i = 0; i < y; i++){
+  residual_.insertEdge(res[i].dest, res[i].source);
+  residual_.setEdgeWeight(res[i].dest, res[i].source, 0);
+}
   // YOUR CODE HERE
 }
 
@@ -34,7 +48,7 @@ NetworkFlow::NetworkFlow(Graph & startingGraph, Vertex source, Vertex sink) :
    * @@params: visited -- A set of vertices we have visited
    */
 
-bool NetworkFlow::findAugmentingPath(Vertex source, Vertex sink, 
+bool NetworkFlow::findAugmentingPath(Vertex source, Vertex sink,
   std::vector<Vertex> &path, std::set<Vertex> &visited) {
 
   if (visited.count(source) != 0)
@@ -84,7 +98,14 @@ bool NetworkFlow::findAugmentingPath(Vertex source, Vertex sink, std::vector<Ver
 
 int NetworkFlow::pathCapacity(const std::vector<Vertex> & path) const {
   // YOUR CODE HERE
-  return 0;
+  int temp = 100000;
+  int k = path.size()-1;
+  for(int i = 0; i < k; i++){
+    if(temp > residual_.getEdgeWeight(path[i], path[i+1])){
+      temp = residual_.getEdgeWeight(path[i], path[i+1]);
+    }
+  }
+  return temp;
 }
 
   /**
@@ -97,6 +118,27 @@ int NetworkFlow::pathCapacity(const std::vector<Vertex> & path) const {
 
 const Graph & NetworkFlow::calculateFlow() {
   // YOUR CODE HERE
+//  findAugmentingPath(source_, sink_, money);
+maxFlow_ = 0;
+while(findAugmentingPath(source_, sink_, money) != false){
+  int value = pathCapacity(money);
+  int k = money.size();
+  for(int i = 0; i < k-1; i++){
+    if(flow_.edgeExists(money[i], money[i+1]) == true){
+      flow_.setEdgeWeight(money[i], money[i+1], flow_.getEdgeWeight(money[i], money[i+1]) + value);
+    }
+    else{
+      flow_.setEdgeWeight(money[i+1], money[i], flow_.getEdgeWeight(money[i+1], money[i]) - value);
+    }
+  }
+  for(int i = 0; i < k-1; i++){
+    residual_.setEdgeWeight(money[i], money[i+1], residual_.getEdgeWeight(money[i], money[i+1]) - value);
+    residual_.setEdgeWeight(money[i+1], money[i], residual_.getEdgeWeight(money[i+1], money[i]) + value);
+  }
+//  findAugmentingPath(source_, sink_, money);
+maxFlow_ = maxFlow_ + value;
+}
+
   return flow_;
 }
 
@@ -115,4 +157,3 @@ const Graph & NetworkFlow::getFlowGraph() const {
 const Graph & NetworkFlow::getResidualGraph() const {
   return residual_;
 }
-
