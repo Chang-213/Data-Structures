@@ -11,7 +11,9 @@
 template <class V, class E>
 unsigned int Graph<V,E>::size() const {
   // TODO: Part 2
-  return 0;
+  unsigned int k = 0;
+  k = vertexMap.size();
+  return k;
 }
 
 
@@ -22,7 +24,9 @@ unsigned int Graph<V,E>::size() const {
 template <class V, class E>
 unsigned int Graph<V,E>::degree(const V & v) const {
   // TODO: Part 2
-  return 0;
+  unsigned int k = 0;
+  k = adjList[v].size();
+  return k;
 }
 
 
@@ -35,6 +39,9 @@ template <class V, class E>
 V & Graph<V,E>::insertVertex(std::string key) {
   // TODO: Part 2
   V & v = *(new V(key));
+  vertexMap.emplace(key, v);  //segfault
+  std::list<edgeListIter> def;
+  adjList.emplace(key, def);
   return v;
 }
 
@@ -46,6 +53,7 @@ V & Graph<V,E>::insertVertex(std::string key) {
 template <class V, class E>
 void Graph<V,E>::removeVertex(const std::string & key) {
   // TODO: Part 2
+
 }
 
 
@@ -59,7 +67,10 @@ template <class V, class E>
 E & Graph<V,E>::insertEdge(const V & v1, const V & v2) {
   // TODO: Part 2
   E & e = *(new E(v1, v2));
-
+  E_byRef edge = e;
+  edgeList.push_front(edge);
+//  edgeListIter edge2 = edgeList.begin();
+  adjList.at(v1.key()).push_front(edgeList.begin());
   return e;
 }
 
@@ -70,7 +81,7 @@ E & Graph<V,E>::insertEdge(const V & v1, const V & v2) {
 * @param key2 The key of the destination Vertex
 */
 template <class V, class E>
-void Graph<V,E>::removeEdge(const std::string key1, const std::string key2) {  
+void Graph<V,E>::removeEdge(const std::string key1, const std::string key2) {
   // TODO: Part 2
 }
 
@@ -90,10 +101,11 @@ void Graph<V,E>::removeEdge(const edgeListIter & it) {
 * @param key The key of an arbitrary Vertex "v"
 * @return The list edges (by reference) that are adjacent to "v"
 */
-template <class V, class E>  
+template <class V, class E>
 const std::list<std::reference_wrapper<E>> Graph<V,E>::incidentEdges(const std::string key) const {
   // TODO: Part 2
   std::list<std::reference_wrapper<E>> edges;
+  edges = adjList[key];
   return edges;
 }
 
@@ -107,5 +119,7 @@ const std::list<std::reference_wrapper<E>> Graph<V,E>::incidentEdges(const std::
 template <class V, class E>
 bool Graph<V,E>::isAdjacent(const std::string key1, const std::string key2) const {
   // TODO: Part 2
+//  std::list<edgeListIter> search = adjList[key1];
+
   return false;
 }

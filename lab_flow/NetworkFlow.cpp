@@ -136,6 +136,7 @@ while(findAugmentingPath(source_, sink_, money) != false){
     residual_.setEdgeWeight(money[i+1], money[i], residual_.getEdgeWeight(money[i+1], money[i]) + value);
   }
 //  findAugmentingPath(source_, sink_, money);
+
 maxFlow_ = maxFlow_ + value;
 }
 
