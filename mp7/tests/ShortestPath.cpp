@@ -10,7 +10,7 @@ Graph<Vertex, Edge> createTestGraph_shortestPath() {
         /  | _/           |
       a -- c -- e    f -- g
         \_   _/
-           d 
+           d
   */
 
   Graph<Vertex, Edge> g;
@@ -22,6 +22,7 @@ Graph<Vertex, Edge> createTestGraph_shortestPath() {
   g.insertVertex("f");
   g.insertVertex("g");
   g.insertVertex("h");
+  g.insertVertex("i");
 
   // Edges on `a`:
   g.insertEdge("a", "b");
@@ -42,6 +43,7 @@ Graph<Vertex, Edge> createTestGraph_shortestPath() {
 
   // Additional edges on `f`:
   g.insertEdge("f", "g");
+  g.insertEdge("f", "i");
 
   // Additional edges on `g`:
   g.insertEdge("g", "h");
@@ -55,7 +57,7 @@ TEST_CASE("Graph::shortestPath finds a shortest path with two vertices", "[weigh
   Graph<Vertex, Edge> g = createTestGraph_shortestPath();
 
   std::list<std::string> path = g.shortestPath("d", "e");
-  
+
   REQUIRE( path.size() == 2 );
   REQUIRE( path.front() == "d" );
   REQUIRE( path.back() == "e" );
@@ -64,7 +66,7 @@ TEST_CASE("Graph::shortestPath finds a shortest path with two vertices", "[weigh
 TEST_CASE("Graph::shortestPath finds a shortest path with three vertices", "[weight=2]") {
   Graph<Vertex, Edge> g = createTestGraph_shortestPath();
 
-  std::list<std::string> path = g.shortestPath("d", "b");  
+  std::list<std::string> path = g.shortestPath("d", "b");
   REQUIRE( path.size() == 3 );
 }
 
@@ -98,4 +100,12 @@ TEST_CASE("Graph::shortestPath finds a shortest path with six vertices", "[weigh
   std::list<std::string> path = g.shortestPath("f", "d");
   // f -> g -> h -> c -> [a/e] -> b
   REQUIRE( path.size() == 6 );
+}
+
+TEST_CASE("Graph::shortestPath finds a shortest path with seven vertices", "[weight=2]") {
+  Graph<Vertex, Edge> g = createTestGraph_shortestPath();
+
+  std::list<std::string> path = g.shortestPath("d", "i");
+  // f -> g -> h -> c -> [a/e] -> b
+  REQUIRE( path.size() == 7 );
 }

@@ -11,7 +11,7 @@ Graph<Vertex, Edge> createTestGraph() {
         /  | _/           |
       a -- c -- e    f -- g
         \_   _/
-           d 
+           d
   */
 
   Graph<Vertex, Edge> g;
@@ -58,20 +58,21 @@ TEST_CASE("Graph::size returns the vertex count", "[weight=1]") {
   Graph<Vertex, Edge> g;
 
   g.insertVertex("a");
-  g.insertVertex("b");  
+  g.insertVertex("b");
   REQUIRE( g.size() == 2 );
 
   g.insertVertex("c");
   g.insertVertex("d");
   g.insertVertex("e");
-  REQUIRE( g.size() == 5 );
+  g.removeVertex("d");
+  REQUIRE( g.size() == 4 );
 }
 
 TEST_CASE("Graph::edges::size returns the edge count", "[weight=1]") {
   Graph<Vertex, Edge> g;
 
   g.insertVertex("a");
-  g.insertVertex("b");  
+  g.insertVertex("b");
   g.insertVertex("c");
   g.insertVertex("d");
   g.insertVertex("e");
@@ -81,8 +82,9 @@ TEST_CASE("Graph::edges::size returns the edge count", "[weight=1]") {
   g.insertEdge("a", "c");
   g.insertEdge("b", "d");
   g.insertEdge("a", "e");
+  g.removeEdge("a", "e");
 
-  REQUIRE( g.edges() == 3 );
+  REQUIRE( g.edges() == 2 );
 }
 
 TEST_CASE("Eight-vertex test graph has correct properties", "[weight=1]") {
@@ -115,5 +117,3 @@ TEST_CASE("Graph::isAdjacent is correct (opposite-order test)", "[weight=1]") {
   Graph<Vertex, Edge> g = createTestGraph();
   REQUIRE( g.isAdjacent("a", "d") == true );
 }
-
-
