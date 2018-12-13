@@ -99,11 +99,13 @@ void Graph<V,E>::removeEdge(const std::string key1, const std::string key2) {
   for(auto it = edgeList.begin(); it != edgeList.end(); ++it){
     if(it->get().source().key() == key1 && it->get().dest().key() == key2){
       edgeList.erase(it);
-      removeEdge(it);
+      adjList.at(it->get().dest().key()).remove(it);
+      adjList.at(it->get().source().key()).remove(it);
     }
     if(it->get().source().key() == key2 && it->get().dest().key() == key1){
       edgeList.erase(it);
-      removeEdge(it);
+      adjList.at(it->get().dest().key()).remove(it);
+      adjList.at(it->get().source().key()).remove(it);
     }
   }
 }
@@ -117,8 +119,8 @@ void Graph<V,E>::removeEdge(const std::string key1, const std::string key2) {
 template <class V, class E>
 void Graph<V,E>::removeEdge(const edgeListIter & it) {
   // TODO: Part 2
-  adjList.at(it->get().dest().key()).remove(it);
-  adjList.at(it->get().source().key()).remove(it);
+  removeEdge(it->get().source().key(), it->get().dest().key());
+
 }
 
 
